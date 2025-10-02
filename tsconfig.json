@@ -10,6 +10,9 @@
     "module": "commonjs",
     "target": "es2020",
     "types": [],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -41,5 +44,8 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
   }
 }
