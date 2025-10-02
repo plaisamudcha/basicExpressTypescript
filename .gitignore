@@ -41,3 +41,4 @@ uploads/ # If your application handles file uploads
 # Other
 temp/
 tmp/
+/src/generated/prisma

@@ -1,16 +1,27 @@
-import { HttpStatusCode, SuccessApiResponse } from "@/types/api.types";
+import {
+  ErrorApiResponse,
+  HttpStatusCode,
+  SuccessApiResponse,
+} from "@/types/api.types";
+import { registerSchema } from "@/validator/auth.validator";
 import { Request, Response } from "express";
+import bcrypt from "bcryptjs";
+import { prisma } from "@/db/prisma";
+import { authService } from "@/services/auth.service";
 
 export const authController = {
-  register: (req: Request, res: Response<SuccessApiResponse>) => {
-    res
-      .status(HttpStatusCode.CREATED)
-      .json({ success: true, message: "Registered successfully", data: {} });
+  async register(req: Request, res: Response<SuccessApiResponse>) {
+    await authService.register(req.body);
+    res.status(HttpStatusCode.CREATED).json({
+      success: true,
+      message: "Registered successfully",
+      data: undefined,
+    });
   },
-  login: (
+  async login(
     req: Request,
     res: Response<SuccessApiResponse<{ accessToken: string }>>
-  ) => {
+  ) {
     // throw new Error("test middleware error");
     res.status(HttpStatusCode.OK).json({
       success: true,
