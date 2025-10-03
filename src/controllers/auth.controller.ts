@@ -1,17 +1,12 @@
-import {
-  ErrorApiResponse,
-  HttpStatusCode,
-  SuccessApiResponse,
-} from "@/types/api.types";
-import { registerSchema } from "@/validator/auth.validator";
+import { HttpStatusCode, SuccessApiResponse } from "@/types/api.types";
 import { Request, Response } from "express";
-import bcrypt from "bcryptjs";
-import { prisma } from "@/db/prisma";
 import { authService } from "@/services/auth.service";
+import { RegisterDto } from "@/dtos/auth.dto";
 
 export const authController = {
   async register(req: Request, res: Response<SuccessApiResponse>) {
-    await authService.register(req.body);
+    const data = req.body as RegisterDto;
+    await authService.register(data);
     res.status(HttpStatusCode.CREATED).json({
       success: true,
       message: "Registered successfully",

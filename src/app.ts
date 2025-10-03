@@ -1,9 +1,9 @@
 import express from "express";
 import "dotenv/config";
-import { envconfig } from "@/config/env.config";
+import { envconfig } from "@/configs/env.config";
 import { authRouter } from "@/routers/auth.router";
-import { errorMiddleware } from "@/middleware/error.middleware";
-import { notFoundMiddleware } from "./middleware/not-found.middleware";
+import { errorMiddleware } from "@/middlewares/error.middleware";
+import { notFoundMiddleware } from "./middlewares/not-found.middleware";
 
 // Should we declare type of app here?
 // Answer: No, TypeScript can infer the type from express()

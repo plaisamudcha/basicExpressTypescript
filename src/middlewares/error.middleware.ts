@@ -8,7 +8,6 @@ export const errorMiddleware = (
   res: Response<ErrorApiResponse>,
   next: NextFunction
 ) => {
-  console.log(error);
   if (error instanceof ZodError) {
     res.status(HttpStatusCode.BAD_REQUEST).json({
       success: false,
