@@ -2,10 +2,7 @@ import express, { Express } from "express";
 import "dotenv/config";
 import { envconfig } from "@/configs/env.config";
 import { authRouter } from "@/routers/auth.router";
-import {
-  ErrorMiddleware,
-  errorMiddleware,
-} from "@/middlewares/error.middleware";
+import { ErrorMiddleware } from "@/middlewares/error.middleware";
 import {
   NotFoundMiddleware,
   notFoundMiddleware,
@@ -52,7 +49,8 @@ class App {
   }
 
   configureErrorHandling() {
-    this.app.use(this.errorMiddleware.handler);
+    this.app.use(this.errorMiddleware.handlerGlobalError);
+    this.app.use(this.errorMiddleware.handlerBaseException);
   }
 
   listen(port: number) {

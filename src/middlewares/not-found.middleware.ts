@@ -7,8 +7,9 @@ export const notFoundMiddleware = (
 ) => {
   res.status(HttpStatusCode.NOT_FOUND).json({
     success: false,
-    message: "Resource not found",
     statusCode: HttpStatusCode.NOT_FOUND,
+    code: "NOT_FOUND",
+    message: "Resource not found",
   });
 };
 
@@ -18,6 +19,7 @@ export class NotFoundMiddleware {
       success: false,
       message: "Resource not found",
       statusCode: HttpStatusCode.NOT_FOUND,
+      code: "NOT_FOUND",
     });
   }
 }
