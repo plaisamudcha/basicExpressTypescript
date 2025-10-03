@@ -1,12 +1,16 @@
 import express, { Express } from "express";
 import "dotenv/config";
 import { envconfig } from "@/configs/env.config";
-import { authRouter } from "@/routers/auth.router";
 import { ErrorMiddleware } from "@/middlewares/error.middleware";
+import { NotFoundMiddleware } from "./middlewares/not-found.middleware";
+import { AuthRouter } from "./routers/auth.router";
+import { RegisterValidator } from "./middlewares/validate.middleware";
+import { AuthController } from "./controllers/auth.controller";
+import { AuthService } from "./services/auth.service";
 import {
-  NotFoundMiddleware,
-  notFoundMiddleware,
-} from "./middlewares/not-found.middleware";
+  MockUserRepository,
+  PrismaUserRepository,
+} from "./repositories/user.repository";
 
 // Should we declare type of app here?
 // Answer: No, TypeScript can infer the type from express()
@@ -29,7 +33,9 @@ class App {
 
   constructor(
     private notfoundMiddleware: NotFoundMiddleware,
-    private errorMiddleware: ErrorMiddleware
+    private errorMiddleware: ErrorMiddleware,
+    private authRouter: AuthRouter,
+    private registerValidator: RegisterValidator
   ) {
     this.app = express();
     this.configureMiddlewares();
@@ -42,7 +48,9 @@ class App {
     this.app.use(express.json());
   }
 
-  configureRoutes() {}
+  configureRoutes() {
+    this.app.use("/auth", this.authRouter.router);
+  }
 
   configureNotFound() {
     this.app.use(this.notfoundMiddleware.handler);
@@ -60,7 +68,15 @@ class App {
   }
 }
 
-const app = new App(new NotFoundMiddleware(), new ErrorMiddleware());
+const app = new App(
+  new NotFoundMiddleware(),
+  new ErrorMiddleware(),
+  new AuthRouter(
+    new RegisterValidator(),
+    new AuthController(new AuthService(new MockUserRepository()))
+  ),
+  new RegisterValidator()
+);
 app.listen(envconfig.PORT);
 
 // Dependency Injection and Polymorphism example {

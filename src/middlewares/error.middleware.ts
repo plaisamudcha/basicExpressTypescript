@@ -57,5 +57,6 @@ export class ErrorMiddleware {
     if (error instanceof ZodError) {
       throw new ValidationException("Validation failed", z.flattenError(error));
     }
+    next(error);
   }
 }
